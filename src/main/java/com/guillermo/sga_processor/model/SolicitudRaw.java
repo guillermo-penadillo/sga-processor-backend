@@ -31,8 +31,8 @@ public class SolicitudRaw {
     private String provincia; // AV - 47
     private String distrito; // AX - 49
 
-    private String numTipoTranajo; // BA - 52
-    private String descriopcionTrabajo; // BC - 54
+    private String numTipoTrabajo; // BA - 52
+    private String descripcionTrabajo; // BC - 54
 
     private String region; // BV - 73
     private String bucket; // CH - 85

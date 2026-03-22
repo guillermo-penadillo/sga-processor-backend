@@ -51,9 +51,11 @@ public class ExcelService {
                 solicitud.setProvincia(getCellValue(row.getCell(47), formatter));
                 solicitud.setDepartamento(getCellValue(row.getCell(48), formatter));
                 solicitud.setDistrito(getCellValue(row.getCell(49), formatter));
+                solicitud.setNumTipoTrabajo(getCellValue(row.getCell(52), formatter));
+                solicitud.setDescripcionTrabajo(getCellValue(row.getCell(54), formatter));
                 solicitud.setRegion(getCellValue(row.getCell(73), formatter));
                 solicitud.setBucket(getCellValue(row.getCell(85), formatter));
-                solicitud.setTecnologia(getCellValue(row.getCell(91), formatter5));
+                solicitud.setTecnologia(getCellValue(row.getCell(91), formatter));
 
                 solicitudes.add(solicitud);
             }

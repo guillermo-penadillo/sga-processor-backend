@@ -27,8 +27,8 @@ public class SolicitudDTO {
     private String provincia; // AV - 47
     private String distrito; // AX - 49
 
-    private int numTipoTranajo; // BA - 52
-    private String descriopcionTrabajo; // BC - 54
+    private int numTipoTrabajo; // BA - 52
+    private String descripcionTrabajo; // BC - 54
 
     private String region; // BV - 73
     private String bucket; // CH - 85
