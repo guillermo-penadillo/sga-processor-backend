@@ -1,7 +1,7 @@
 package com.guillermo.sga_processor.controller;
 
+import com.guillermo.sga_processor.model.SolicitudRaw;
 import lombok.RequiredArgsConstructor;
-import com.guillermo.sga_processor.model.Solicitud;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import com.guillermo.sga_processor.service.ExcelService;
@@ -17,12 +17,12 @@ public class UploadController {
     private final ExcelService excelService;
 
     @PostMapping("/process")
-    public List<Solicitud> processFiles(
+    public List<SolicitudRaw> processFiles(
             @RequestParam("altas") MultipartFile altas,
             @RequestParam("mantos") MultipartFile mantos) {
 
-        List<Solicitud> listaAltas = excelService.parseExcel(altas);
-        List<Solicitud> listaMantos = excelService.parseExcel(mantos);
+        List<SolicitudRaw> listaAltas = excelService.parseExcel(altas);
+        List<SolicitudRaw> listaMantos = excelService.parseExcel(mantos);
 
         return Stream.concat(listaAltas.stream(), listaMantos.stream()).toList();
     }

@@ -1,6 +1,6 @@
 package com.guillermo.sga_processor.service;
 
-import com.guillermo.sga_processor.model.Solicitud;
+import com.guillermo.sga_processor.model.SolicitudRaw;
 import org.apache.poi.ss.usermodel.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -12,8 +12,10 @@ import java.util.List;
 @Service
 public class ExcelService {
 
-    public List<Solicitud> parseExcel(MultipartFile file) {
-        List<Solicitud> solicitudes = new ArrayList<>();
+    DataFormatter formatter = new DataFormatter();
+
+    public List<SolicitudRaw> parseExcel(MultipartFile file) {
+        List<SolicitudRaw> solicitudes = new ArrayList<>();
 
         try (InputStream is = file.getInputStream();
              Workbook workbook = WorkbookFactory.create(is)) {
@@ -25,11 +27,33 @@ public class ExcelService {
 
                 if (row == null) continue;
 
-                Solicitud solicitud = new Solicitud();
-                solicitud.setCodigo(getCellValue(row.getCell(0)));
-                solicitud.setEstado(getCellValue(row.getCell(1)));
-                solicitud.setFechaCreacion(getCellValue(row.getCell(2)));
-                solicitud.setTipo(getCellValue(row.getCell(3)));
+                SolicitudRaw solicitud = new SolicitudRaw();
+                solicitud.setContrata(getCellValue(row.getCell(3), formatter));
+                solicitud.setCliente(getCellValue(row.getCell(4), formatter));
+                solicitud.setSot(getCellValue(row.getCell(5), formatter));
+                solicitud.setDireccion(getCellValue(row.getCell(6), formatter));
+                solicitud.setFechaRegistro(getCellValue(row.getCell(8), formatter));
+                //solicitud.setDilacion(getCellValue(row.getCell(9),formatter ));
+                String dilacionStr = getCellValue(row.getCell(9), formatter);
+                if (!dilacionStr.isEmpty()) {
+                    solicitud.setDilacion(
+                            String.valueOf((int) Math.round(Double.parseDouble(dilacionStr)))
+                    );
+                }
+                solicitud.setEstadoAgenda(getCellValue(row.getCell(10), formatter));
+                solicitud.setFechaProgramacion(getCellValue(row.getCell(15), formatter));
+                solicitud.setTipoTrabajo(getCellValue(row.getCell(31), formatter));
+                solicitud.setTipoServicio(getCellValue(row.getCell(37), formatter));
+                solicitud.setEstadoSot(getCellValue(row.getCell(39), formatter));
+                solicitud.setPlano(getCellValue(row.getCell(40), formatter));
+                solicitud.setCintillo(getCellValue(row.getCell(41), formatter));
+                solicitud.setTipoEstadoSot(getCellValue(row.getCell(46), formatter));
+                solicitud.setProvincia(getCellValue(row.getCell(47), formatter));
+                solicitud.setDepartamento(getCellValue(row.getCell(48), formatter));
+                solicitud.setDistrito(getCellValue(row.getCell(49), formatter));
+                solicitud.setRegion(getCellValue(row.getCell(73), formatter));
+                solicitud.setBucket(getCellValue(row.getCell(85), formatter));
+                solicitud.setTecnologia(getCellValue(row.getCell(91), formatter5));
 
                 solicitudes.add(solicitud);
             }
@@ -39,10 +63,10 @@ public class ExcelService {
         return solicitudes;
     }
 
-    private String getCellValue(Cell cell) {
+    private String getCellValue(Cell cell, DataFormatter formatter) {
         if (cell == null) return "";
-
-        switch (cell.getCellType()) {
+        return formatter.formatCellValue(cell).trim();
+        /*switch (cell.getCellType()) {
             case STRING:
                 return cell.getStringCellValue();
 
@@ -56,6 +80,6 @@ public class ExcelService {
 
             default:
                 return "";
-        }
+        }*/
     }
 }
